@@ -1,0 +1,28 @@
+<%- include ('../partials/head') %>
+<%- include ('../partials/menu') %>
+
+<main>
+  <div class="container">
+    <!-- THE REST OF YOUR HTML CODE GOES HERE -->
+
+    <h1>Register</h1>
+    <form action="/register" method="POST">
+        <label for="username">Username:</label>
+        <input type="username" id="username" name="username" />
+      
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" />
+
+        <label for="skill">Skill Level:</label>
+        <p>Green - 1; Blue - 2; Black - 3; Double Black - 4; Park - 5</p>
+        <input type="skill" id="skill" name="skill" />
+
+        <label for="perf">Mountain Preference:</label>
+        <input type="perd" id="perf" name="perf"/>
+        
+        <input type="submit" value="register" />
+      </form>
+  </div>
+</main>
+
+<%- include ('../partials/footer') %>
