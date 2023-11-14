@@ -10,3 +10,8 @@ CREATE TABLE tags(
     ski_or_board VARCHAR(30) NOT NULL
     
 );
+
+CREATE TABLE users(
+    username VARCHAR(50) PRIMARY KEY,
+    password CHAR(60) NOT NULL
+);
