@@ -14,16 +14,16 @@ INSERT INTO students (name, email) VALUES
 ('Leia', 'ldudlestonec@colorado.edu');
 
 INSERT INTO tags (level, name, location, ski_or_board) VALUES
-(1, 'Andrich', 'Eldora', 'ski'),
-(1, 'Haslock', 'Copper', 'board'),
-(2, 'Deetlefs', 'Winter Park', 'board'),
-(3, 'Abbess', 'Copper', 'board'),
-(4, 'Colter', 'Breckenridge', 'ski'),
-(1, 'Spillman', 'Eldora', 'board'),
-(2, 'Baggally', 'Eldora', 'board'),
-(1, 'Lendrem', 'Winter Park', 'ski'),
-(1, 'Fumagalli', 'Breckenridge', 'ski'),
-(1, 'Slocket', 'Copper', 'ski'),
-(2, 'Robarts', 'Eldora', 'ski'),
-(2, 'Frere', 'Winter Park', 'board'),
-(3, 'Dudlestone', 'Breckenridge', 'board');
+(1, 'Janek', 'Eldora', 'ski'),
+(1, 'Geri', 'Copper', 'board'),
+(2, 'Ewen', 'Winter Park', 'board'),
+(3, 'Towney', 'Copper', 'board'),
+(4, 'Gradey', 'Breckenridge', 'ski'),
+(1, 'Willie', 'Eldora', 'board'),
+(2, 'Aidan', 'Eldora', 'board'),
+(1, 'Bee', 'Winter Park', 'ski'),
+(1, 'Osborne', 'Breckenridge', 'ski'),
+(1, 'Hurleigh', 'Copper', 'ski'),
+(2, 'Frederic', 'Eldora', 'ski'),
+(2, 'Fax', 'Winter Park', 'board'),
+(3, 'Leia', 'Breckenridge', 'board');
