@@ -18,7 +18,6 @@ CREATE TABLE tags(
     name VARCHAR(50) NOT NULL,
     location VARCHAR(50) NOT NULL,
     ski_or_board VARCHAR(30) NOT NULL
-    
 );
 
 CREATE TABLE users(
