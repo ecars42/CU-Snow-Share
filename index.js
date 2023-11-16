@@ -105,33 +105,34 @@ app.post("/register", async (req, res) => {
 
 // Login API
 app.post("/login", async (req, res) => {
-  // check if password from request matches with password in DB
-  console.log("hi");
-  const user_query = 'SELECT * FROM users WHERE username = $1'
-  const user_match = await db.any(user_query, [req.body.username]);
-  // To-DO: Insert username and hashed password into the 'users' table
-  if(user_match.length == 0){
-    res.redirect("/register");
-  }
-  else if(user_match.error)
-  {
-    res.render("pages/login", {message: "Incorrect username or password"});
-  }
-  else
-  {
-    const match_pass = await bcrypt.compare(req.body.password, user_match[0].password);
-    //save user details in session like in lab 8
-    if(!match_pass)
-    {
-      res.render("pages/login", {message: "Incorrect username or password"});
+  try {
+    // Check if the password from the request matches with the password in the DB
+    const user_query = 'SELECT * FROM users WHERE username = $1';
+    const user_match = await db.any(user_query, [req.body.username]);
+
+    if (user_match.length === 0) {
+      // User not found, return an error response
+      res.status(200).json({ status: 'error', message: 'Incorrect username or password' });
+    } else {
+      const match_pass = await bcrypt.compare(req.body.password, user_match[0].password);
+
+      if (!match_pass) {
+        // Incorrect password, return an error response
+        res.status(200).json({ status: 'error', message: 'Incorrect username or password.' });
+      } else {
+        // Successful login, return a success response
+        res.status(200).json({ status: 'success', message: 'User login successful' });
+      }
     }
-    else{
-      req.session.user = user_match[0];
-      req.session.save();
-      res.redirect("/discover");
-    }
+  } catch (error) {
+    // Log the error
+    console.log('error: ', error);
+
+    // Internal server error, return an error response
+    res.status(500).json({ status: 'error', message: 'Internal server error' });
   }
 });
+
 
 app.get("/about", (req, res) => {
   res.render("pages/about")

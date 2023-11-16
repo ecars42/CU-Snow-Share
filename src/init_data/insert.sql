@@ -30,3 +30,6 @@ INSERT INTO tags (level, name, location, ski_or_board) VALUES
 (2, 'Frederic', 'Eldora', 'ski'),
 (2, 'Fax', 'Winter Park', 'board'),
 (3, 'Leia', 'Breckenridge', 'board');
+
+INSERT INTO users(username, password) VALUES
+('icespice', 'munch');
