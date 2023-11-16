@@ -1,0 +1,57 @@
+<%- include ('../partials/head') %>
+<%- include ('../partials/menu') %>
+
+<main>
+  <div class="container">
+    <!-- THE REST OF YOUR HTML CODE GOES HERE -->
+
+    <h1>Register</h1>
+    <form action="/register" method="POST">
+
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="username" id="username" name="username" />
+        </div>
+      
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" />
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" pattern=".+@colorado\.edu" required/>
+        </div>
+
+        <a style = "color: rgb(0, 0, 0);">Skill Ratings -> Green - 1; Blue - 2; Black - 3; Double Black - 4; Park - 5</a>
+        <div class="form-group">
+            <label for="skill">Skill Level:</label>
+            <input type="skill" id="skill" name="skill" />
+        </div>
+
+        <div class="form-group">
+            <label for="perf">Mountain Preference:</label>
+            <input type="perd" id="perf" name="perf"/>
+        </div>
+
+        <div class="form-group">
+          <label for="skiOrBoard" class="custom-text-color">Ski or Board:</label>
+          <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle custom-text-color" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Ski or Board
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item custom-text-color" href="#">Ski</a>
+                  <a class="dropdown-item custom-text-color" href="#">Board</a>
+              </div>
+          </div>
+        </div>
+      
+        <div class="form-group">
+            <input type="submit" value="register" />
+        </div>
+    </form>
+  </div>
+</main>
+
+<%- include ('../partials/footer') %>

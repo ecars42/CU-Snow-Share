@@ -1,0 +1,11 @@
+Test case for feature 1: GET username and password (login info) 
+- User activity to be tested: ability for the user to log in
+- Test data to be used: users table username and password data
+- Test results to be checked: user will be able to access other components of the site
+
+Test case for feature 2: GET snowshare partners (tag-matching function)
+- User activity to be tested: ability for the user to be matched to other users with similar tags
+- Test data to be used: students, tags, and mountains table data
+- Test results to be checked: user will be able to find skiing/snowboarding partners
+
+updated 11/16 - anusha
