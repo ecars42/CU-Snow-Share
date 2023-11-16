@@ -6,8 +6,7 @@ CREATE TABLE students(
 CREATE TABLE mountains(
     resort_id SERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
-    location VARCHAR(50) NOT NULL,
-    skill_level SMALLINT,
+    skill_level SMALLINT NOT NULL,
     preference VARCHAR(15) NOT NULL,
     mode_trans VARCHAR(30) NOT NULL
     
@@ -22,5 +21,5 @@ CREATE TABLE tags(
 
 CREATE TABLE users(
     username VARCHAR(50) PRIMARY KEY,
-    password CHAR(60) NOT NULL
+    password VARCHAR(60) NOT NULL
 );

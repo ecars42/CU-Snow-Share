@@ -13,6 +13,9 @@ INSERT INTO students (name, email) VALUES
 ('Fax', 'ffrereb@colorado.edu'),
 ('Leia', 'ldudlestonec@colorado.edu');
 
+INSERT INTO mountains(resort_id, name, skill_level, preference, mode_trans) VALUES
+(1, 'Winter Park', 2, 'ski', 'car');
+
 INSERT INTO tags (level, name, location, ski_or_board) VALUES
 (1, 'Janek', 'Eldora', 'ski'),
 (1, 'Geri', 'Copper', 'board'),
