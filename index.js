@@ -133,6 +133,10 @@ app.post("/login", async (req, res) => {
   }
 });
 
+app.get("/about", (req, res) => {
+  res.render("pages/about")
+});
+
 app.get("/logout", (req, res) => {
   req.session.destroy();
   res.render("pages/login", {message: "Logged out Successfully"});
