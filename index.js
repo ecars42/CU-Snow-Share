@@ -41,6 +41,11 @@ db.connect()
 
 app.set('view engine', 'ejs'); // set the view engine to EJS
 app.use(bodyParser.json()); // specify the usage of JSON for parsing request body.
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
 
 // initialize session variables
 app.use(
@@ -51,23 +56,17 @@ app.use(
   })
 );
 
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  })
-);
+
 
 // *****************************************************
 // <!-- Section 4 : API Routes -->
 // *****************************************************
 
-// TODO - Include your API routes here
 app.get("/home", (req, res) => {
     res.redirect("/login"); //this will call the /anotherRoute route in the API
   });
 
-app.get("/login", (req, res) => {
-  //do something
+app.get("/login", async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
@@ -109,7 +108,7 @@ app.post("/login", async (req, res) => {
   if(user_match.length == 0){
     res.redirect("/register");
   }
-  else if(user_match.error)
+  else if(user_match.length == 0)
   {
     res.render("pages/login", {message: "Incorrect username or password"});
   }

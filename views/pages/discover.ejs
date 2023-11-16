@@ -3,10 +3,21 @@
 
 <main>
     <div class="container">
-      <!-- THE REST OF YOUR HTML CODE GOES HERE -->
   
-      <h1>Register</h1>
-      <form action="/register" method="POST">
+      <!-- 
+      Acceptance Criteria: As a user, I should be able to find 
+      skiing/snowboarding partners having similar interests based on 
+      tags chosen upon account creation
+      
+      Acceptance Criteria: As a user, I should be able to set my "tags", which include 
+      skiing/snowboarding preference, location, skill level, and mode of transportation. 
+      Based on these, the site will suggest to match me with users who have similar tags. 
+      It will depend on a table that holds the information of multiple users, including tags. 
+      Then, once the user selects a button called "find friends", they will see a list of 
+      other usernames in the database that match all their preferences.
+      -->
+      <h1>Discover</h1>
+      <form action="/discover" method="POST">
           <label for="username">Username:</label>
           <input type="username" id="username" name="username" />
         
@@ -17,7 +28,4 @@
         </form>
     </div>
 </main>
-
-
-
 <%- include ('../partials/footer') %>
