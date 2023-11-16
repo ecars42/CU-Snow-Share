@@ -5,10 +5,10 @@ CREATE TABLE students(
     email VARCHAR(200) NOT NULL
 );
 
-CREATE TABLE tags(
+CREATE TABLE mountains(
     resort_id SERIAL PRIMARY KEY,
-    skill_level SMALLINT NOT NULL,
     mountain VARCHAR(50) NOT NULL,
-    mode_trans VARCHAR(30) NOT NULL,
-    ski_or_board VARCHAR(30) NOT NULL
+    skill_level SMALLINT NOT NULL,
+    mode_trans VARCHAR(30) NOT NULL
+    ski_or_board VARCHAR(30) NOT NULL    
 );
