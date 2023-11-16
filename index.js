@@ -60,6 +60,10 @@ app.use(
 // *****************************************************
 // <!-- Section 4 : API Routes -->
 // *****************************************************
+//test for lab 11
+app.get('/welcome', (req, res) => {
+  res.json({status: 'success', message: 'Welcome!'});
+});
 
 // TODO - Include your API routes here
 app.get("/home", (req, res) => {
@@ -87,8 +91,8 @@ app.post("/register", async (req, res) => {
 
     // To-DO: Insert username and hashed password into the 'users' table
     await db.none(
-      "INSERT INTO users(username, password) VALUES ($1, $2)",
-      [req.body.username, hash]
+      "INSERT INTO students(name, password) VALUES ($1, $2) ON CONFLICT (username) DO NOTHING",
+      [req.body.name, hash]
     );
     console.log('fetched response');
     res.redirect("/login");
@@ -153,5 +157,5 @@ app.use(auth);
 // <!-- Section 5 : Start Server-->
 // *****************************************************
 // starting the server and keeping the connection open to listen for more requests
-app.listen(3000);
+module.exports = app.listen(3000);
 console.log('Server is listening on port 3000');
