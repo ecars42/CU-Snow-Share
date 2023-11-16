@@ -112,7 +112,7 @@ app.post("/login", async (req, res) => {
   if(user_match.length == 0){
     res.redirect("/register");
   }
-  else if(user_match.length == 0)
+  else if(user_match.error)
   {
     res.render("pages/login", {message: "Incorrect username or password"});
   }
@@ -131,6 +131,7 @@ app.post("/login", async (req, res) => {
     }
   }
 });
+
 
 app.get("/about", (req, res) => {
   res.render("pages/about")
