@@ -1,3 +1,4 @@
+
 // Imports the index.js file to be tested.
 const server = require('../index'); //TO-DO Make sure the path to your index.js is correctly added
 // Importing libraries
@@ -37,7 +38,7 @@ it('positive : /login', done => {
     .send({ username: 'icespice', password: 'munch'})
     .end((err, res) => {
       expect(res).to.have.status(200);
-      expect(res.body.message).to.equals('User login successful');
+      expect(res.body.message).to.equals('User login successful.');
       done();
     });
 });
@@ -45,7 +46,7 @@ it('positive : /login', done => {
 // 2. Negative test case
 //We are checking POST /add_user API by passing the user info in in incorrect manner (name cannot be an integer). This test case should pass and return a status 200 along with a "Invalid input" message.
 //NOT FINISHED
-it('Negative : /login. Checking invalid username or password', done => {
+it('Negative : /login. Checking invalid username or password.', done => {
   chai
     .request(server)
     .post('/login')
@@ -53,6 +54,30 @@ it('Negative : /login. Checking invalid username or password', done => {
     .end((err, res) => {
       expect(res).to.have.status(200);
       expect(res.body.message).to.equals('Incorrect username or password.');
+      done();
+    });
+});
+
+it('positive : /register', done => {
+  chai
+    .request(server)
+    .post('/register')
+    .send({ username: 'icespice', password: 'munch'})
+    .end((err, res) => {
+      expect(res).to.have.status(200);
+      expect(res.body.message).to.equals('Registration successful.');
+      done();
+    });
+});
+
+it('Negative : /register. Checking invalid username or password.', done => {
+  chai
+    .request(server)
+    .post('/register')
+    .send({ name: '', password: ''})
+    .end((err, res) => {
+      expect(res).to.have.status(200);
+      expect(res.body.message).to.equals('Invalid registration.');
       done();
     });
 });

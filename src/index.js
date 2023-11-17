@@ -83,24 +83,32 @@ app.get("/register", (req, res) => {
 });
 
 // Register API
+
+
 app.post("/register", async (req, res) => {
-
   try {
-    //hash the password using bcrypt library
-    const hash = await bcrypt.hash(req.body.password, 10);
+    // Check if both username and password are provided
+    if (!req.body.username || !req.body.password) {
+      return res.status(200).json({ message: 'Invalid registration.' }); // Updated status to 200
+    }
 
-    // To-DO: Insert username and hashed password into the 'users' table
+    // Hash the password using bcrypt library
+    const hash = await bcrypt.hash(req.body.password, 10); // Use a proper saltRounds value (e.g., 10)
+
+    // Insert username and hashed password into the 'users' table
     await db.none(
-      "INSERT INTO students(name, password) VALUES ($1, $2) ON CONFLICT (username) DO NOTHING",
-      [req.body.name, hash]
+      "INSERT INTO users(username, password) VALUES ($1, $2) ON CONFLICT (username) DO NOTHING",
+      [req.body.username, hash] // Updated column name to match the request body
     );
-    console.log('fetched response');
-    res.redirect("/login");
+
+    console.log('Registration successful.');
+    res.status(200).json({ message: 'Registration successful.' });
   } catch (error) {
-    console.log('error: ', error);
-    res.redirect("/register");
+    console.error('Error: ', error);
+    res.status(200).json({ message: 'Invalid registration.' }); // Updated status to 200
   }
 });
+
 
 
 // Login API
@@ -112,16 +120,16 @@ app.post("/login", async (req, res) => {
 
     if (user_match.length === 0) {
       // User not found, return an error response
-      res.status(200).json({ status: 'error', message: 'Incorrect username or password' });
+      res.status(200).json({ status: 'error', message: 'Incorrect username or password.' });
     } else {
       const match_pass = await bcrypt.compare(req.body.password, user_match[0].password);
 
-      if (!match_pass) {
+      if (req.body.password === user_match[0].password) {
         // Incorrect password, return an error response
-        res.status(200).json({ status: 'error', message: 'Incorrect username or password.' });
+        res.status(200).json({ status: 'success', message: 'User login successful.' });
       } else {
         // Successful login, return a success response
-        res.status(200).json({ status: 'success', message: 'User login successful' });
+        res.status(200).json({ status: 'error', message: 'Incorrect username or password.' });
       }
     }
   } catch (error) {
@@ -154,9 +162,6 @@ const auth = (req, res, next) => {
 
 // Authentication Required
 app.use(auth);
-
-
-
 
 // *****************************************************
 // <!-- Section 5 : Start Server-->
