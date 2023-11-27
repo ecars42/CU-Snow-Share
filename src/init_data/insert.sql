@@ -13,23 +13,17 @@ INSERT INTO students (name, email) VALUES
 ('Fax', 'ffrereb@colorado.edu'),
 ('Leia', 'ldudlestonec@colorado.edu');
 
-INSERT INTO mountains(resort_id, name, skill_level, preference, mode_trans) VALUES
-(1, 'Winter Park', 2, 'ski', 'car');
-
-INSERT INTO tags (level, name, location, ski_or_board) VALUES
-(1, 'Janek', 'Eldora', 'ski'),
-(1, 'Geri', 'Copper', 'board'),
-(2, 'Ewen', 'Winter Park', 'board'),
-(3, 'Towney', 'Copper', 'board'),
-(4, 'Gradey', 'Breckenridge', 'ski'),
-(1, 'Willie', 'Eldora', 'board'),
-(2, 'Aidan', 'Eldora', 'board'),
-(1, 'Bee', 'Winter Park', 'ski'),
-(1, 'Osborne', 'Breckenridge', 'ski'),
-(1, 'Hurleigh', 'Copper', 'ski'),
-(2, 'Frederic', 'Eldora', 'ski'),
-(2, 'Fax', 'Winter Park', 'board'),
-(3, 'Leia', 'Breckenridge', 'board');
-
-INSERT INTO users(username, password) VALUES
-('icespice', 'munch');
+INSERT INTO tags (ski_or_board, first_name, mtn_name, skill_level) VALUES
+('ski', 'Janek', 'Eldora', 1),
+('board', 'Geri', 'Copper', 2),
+('board', 'Ewen', 'Winter Park', 3),
+('board', 'Towney', 'Copper', 3),
+('ski', 'Gradey', 'Breckenridge', 4),
+('board', 'Willie', 'Eldora', 1),
+('board', 'Aidan', 'Eldora', 2),
+('ski', 'Bee', 'Winter Park', 1),
+('ski', 'Osborne', 'Breckenridge', 1),
+('ski', 'Hurleigh', 'Copper', 1),
+('ski', 'Frederic', 'Eldora', 2),
+('board', 'Fax', 'Winter Park', 3),
+('board', 'Leia', 'Breckenridge', 4);
