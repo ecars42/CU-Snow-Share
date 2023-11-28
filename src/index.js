@@ -82,46 +82,45 @@ app.get("/register", (req, res) => {
 });
 
 // Register API
-
-
 app.post("/register", async (req, res) => {
   try {
     // Check if both username and password are provided
-    if (!req.body.username || !req.body.password) {
-      return res.status(200).json({ message: 'Invalid registration.' }); // Updated status to 200
+    if (!req.body.username || !req.body.password || !req.body.name || !req.body.email) {
+      return res.status(200).json({ message: 'Invalid registration.' });
     }
 
     // Hash the password using bcrypt library
-    const hash = await bcrypt.hash(req.body.password, 10); // Use a proper saltRounds value (e.g., 10)
+    const hash = await bcrypt.hash(req.body.password, 10);
 
-    // Insert username and hashed password into the 'users' table
+    // Insert username, hashed password, name, and email into the 'students' table
     await db.none(
-      "INSERT INTO users(username, password) VALUES ($1, $2) ON CONFLICT (username) DO NOTHING",
-      [req.body.username, hash] // Updated column name to match the request body
+      "INSERT INTO students(username, password, name, email) VALUES ($1, $2, $3, $4) ON CONFLICT (username) DO NOTHING",
+      [req.body.username, hash, req.body.name, req.body.email]
     );
 
     console.log('Registration successful.');
     res.status(200).json({ message: 'Registration successful.' });
   } catch (error) {
     console.error('Error: ', error);
-    res.status(200).json({ message: 'Invalid registration.' }); // Updated status to 200
+    res.status(200).json({ message: 'Invalid registration.' });
   }
 });
+
 
 
 
 // Login API
 app.post("/login", async (req, res) => {
   try {
-    // Check if the password from the request matches with the password in the DB
-    const user_query = 'SELECT * FROM users WHERE username = $1';
-    const user_match = await db.any(user_query, [req.body.username]);
+    // Check if the username exists in the students table
+    const student_query = 'SELECT * FROM students WHERE username = $1';
+    const student_match = await db.any(student_query, [req.body.username]);
 
-    if (user_match.length === 0) {
-      // User not found, return an error response
+    if (student_match.length === 0) {
+      // Student not found, return an error response
       res.status(200).json({ status: 'error', message: 'Incorrect username or password' });
     } else {
-      const match_pass = await bcrypt.compare(req.body.password, user_match[0].password);
+      const match_pass = await bcrypt.compare(req.body.password, student_match[0].password);
 
       if (!match_pass) {
         // Incorrect password, return an error response
