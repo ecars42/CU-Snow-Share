@@ -1,31 +1,97 @@
-<%- include ('../partials/head') %>
+<%- include ('../partials/header') %>
 <%- include ('../partials/menu') %>
 
-<main>
-    <div class="container">
-  
-      <!-- 
-      Acceptance Criteria: As a user, I should be able to find 
-      skiing/snowboarding partners having similar interests based on 
-      tags chosen upon account creation
-      
-      Acceptance Criteria: As a user, I should be able to set my "tags", which include 
-      skiing/snowboarding preference, location, skill level, and mode of transportation. 
-      Based on these, the site will suggest to match me with users who have similar tags. 
-      It will depend on a table that holds the information of multiple users, including tags. 
-      Then, once the user selects a button called "find friends", they will see a list of 
-      other usernames in the database that match all their preferences.
-      -->
-      <h1>Discover</h1>
-      <form action="/discover" method="POST">
-          <label for="username">Username:</label>
-          <input type="username" id="username" name="username" />
-        
-          <label for="password">Password:</label>
-          <input type="password" id="password" name="password" />
-        
-          <input type="submit" value="register" />
-        </form>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discover Page</title>
+    <style>
+        /* Add stylesheet reference here */
+    </style>
+</head>
+<body>
+    <h1>Find your ski/snowboarding partners! Click on the button below to see their name and contact email.</h1>
+
+    <!-- Button to trigger the comparison -->
+    <button onclick="compareData()">Compare Data</button>
+
+    <!-- Display area for matched primary keys -->
+    <div id="matchedKeys">
+        <h2>Matched Keys</h2>
+        <ul id="matchedList"></ul>
     </div>
-</main>
+
+    <script>
+        const tableData = [
+        { first_name: 'Janek', ski_or_board: 'ski', mtn_name: 'Eldora', skill_level: 1 },
+        { first_name: 'Geri', ski_or_board: 'board', mtn_name: 'Copper', skill_level: 2 },
+        { first_name: 'Ewen', ski_or_board: 'board', mtn_name: 'Winter Park', skill_level: 3 },
+        { first_name: 'Towney', ski_or_board: 'board', mtn_name: 'Copper', skill_level: 3 },
+        { first_name: 'Gradey', ski_or_board: 'ski', mtn_name: 'Breckenridge', skill_level: 4 },
+        { first_name: 'Willie', ski_or_board: 'board', mtn_name: 'Eldora', skill_level: 1 },
+        { first_name: 'Aidan', ski_or_board: 'board', mtn_name: 'Eldora', skill_level: 2 },
+        { first_name: 'Bee', ski_or_board: 'ski', mtn_name: 'Winter Park', skill_level: 1 },
+        { first_name: 'Osborne', ski_or_board: 'ski', mtn_name: 'Breckenridge', skill_level: 1 },
+        { first_name: 'Hurleigh', ski_or_board: 'ski', mtn_name: 'Copper', skill_level: 1 },
+        { first_name: 'Frederic', ski_or_board: 'ski', mtn_name: 'Eldora', skill_level: 2 },
+        { first_name: 'Fax', ski_or_board: 'board', mtn_name: 'Winter Park', skill_level: 3 },
+        { first_name: 'Leia', ski_or_board: 'board', mtn_name: 'Breckenridge', skill_level: 4 }
+      ];
+
+        // Function to trigger the comparison
+        function compareData() {
+            const loggedInUser = 'Janek';  // Replace with the actual logged-in user
+
+            // Array to store the count of matching attributes for each row
+            const matchingCounts = [];
+
+            // Loop through each row of the table
+            tableData.forEach(row => {
+                if (row.first_name !== loggedInUser) {
+                    // Compare attributes and count matches
+                    const matchCount = countMatchingAttributes(row, tableData.find(user => user.first_name === loggedInUser));
+                    matchingCounts.push({ first_name: row.first_name, matchCount });
+                }
+            });
+
+            // Display matched keys on the webpage
+            displayMatchedKeys(matchingCounts);
+        }
+
+        // Function to count matching attributes for two rows
+        function countMatchingAttributes(row1, row2) {
+            let matchCount = 0;
+
+            // Compare attributes (modify this based on your criteria)
+            if (row1.ski_or_board === row2.ski_or_board) {
+                matchCount++;
+            }
+            if (row1.mtn_name === row2.mtn_name) {
+                matchCount++;
+            }
+            return matchCount;
+        }
+
+        // Function to display matched keys on the webpage
+        function displayMatchedKeys(matchingCounts) {
+            const matchedList = document.getElementById('matchedList');
+
+            // Clear previous results
+            matchedList.innerHTML = '';
+
+            // Display matched keys with match count
+            matchingCounts.forEach(item => {
+                if (item.matchCount >= 2) {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `${item.first_name} (Match Count: ${item.matchCount})`;
+                    matchedList.appendChild(listItem);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
+
 <%- include ('../partials/footer') %>

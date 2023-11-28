@@ -27,3 +27,6 @@ INSERT INTO tags (ski_or_board, first_name, mtn_name, skill_level) VALUES
 ('ski', 'Frederic', 'Eldora', 2),
 ('board', 'Fax', 'Winter Park', 3),
 ('board', 'Leia', 'Breckenridge', 4);
+
+INSERT INTO users(username, password) VALUES
+('icespice', 'munch');
