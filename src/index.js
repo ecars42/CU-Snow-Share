@@ -107,8 +107,6 @@ app.post("/register", async (req, res) => {
 });
 
 
-
-
 // Login API
 app.post("/login", async (req, res) => {
   try {
