@@ -140,7 +140,9 @@ app.post("/login", async (req, res) => {
         res.status(200).json({ status: 'error', message: 'Incorrect username or password.' });
       } else {
         // Successful login, return a success response
+        res.redirect("/discover")
         res.status(200).json({ status: 'success', message: 'User login successful' });
+        
       }
     }
   } catch (error) {
@@ -170,6 +172,10 @@ const auth = (req, res, next) => {
   }
   next();
 };
+
+app.get("/discover", async (req, res) => {
+  
+});
 
 // Authentication Required
 app.use(auth);
