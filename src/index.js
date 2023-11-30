@@ -106,9 +106,6 @@ app.post("/register", async (req, res) => {
   }
 });
 
-
-
-
 // Login API
 app.post("/login", async (req, res) => {
   try {
@@ -139,11 +136,42 @@ app.post("/login", async (req, res) => {
   }
 });
 
-
+// About API
 app.get("/about", (req, res) => {
   res.render("pages/about")
 });
 
+// Discover API
+app.get("/discover", (req, res) => {
+  res.render("pages/discover")
+});
+
+app.get("/api/discover/matches", (req, res) => {
+  // Logic to get matches based on the logged-in user
+  const loggedInUser = req.session.user; // Assuming you store the logged-in user in the session
+  const matchingCounts = getMatchingCounts(loggedInUser);
+
+  // Respond with the matching counts
+  res.json({ matches: matchingCounts });
+});
+
+// Helper function to get matching counts
+function getMatchingCounts(loggedInUser) {
+  const matchingCounts = [];
+
+  // Loop through each row of the table
+  tableData.forEach(row => {
+      if (row.first_name !== loggedInUser) {
+          // Compare attributes and count matches
+          const matchCount = countMatchingAttributes(row, tableData.find(user => user.first_name === loggedInUser));
+          matchingCounts.push({ first_name: row.first_name, matchCount });
+      }
+  });
+
+  return matchingCounts;
+}
+
+// Logout API
 app.get("/logout", (req, res) => {
   req.session.destroy();
   res.render("pages/login", {message: "Logged out Successfully"});
