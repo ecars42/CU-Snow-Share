@@ -85,6 +85,7 @@ app.get("/register", (req, res) => {
 app.post("/register", async (req, res) => {
   try {
     // Check if both username and password are provided
+    //not needed
     if (!req.body.username || !req.body.password || !req.body.name || !req.body.email) {
       return res.status(200).json({ message: 'Invalid registration.' });
     }
@@ -94,18 +95,29 @@ app.post("/register", async (req, res) => {
 
     // Insert username, hashed password, name, and email into the 'students' table
     await db.none(
-      "INSERT INTO students(username, password, name, email) VALUES ($1, $2, $3, $4) ON CONFLICT (username) DO NOTHING",
-      [req.body.username, hash, req.body.name, req.body.email]
+      "INSERT INTO students(username, name, email, password) VALUES ($1, $2, $3, $4)",
+      [req.body.username, req.body.name, req.body.email, hash]
     );
 
-    console.log('Registration successful.');
-    res.status(200).json({ message: 'Registration successful.' });
-  } catch (error) {
-    console.error('Error: ', error);
-    res.status(200).json({ message: 'Invalid registration.' });
-  }
-});
+    await db.none(
+      "INSERT INTO tags(ski_or_board, username, mtn_name, skill_level) VALUES ($1, $2, $3, $4)",
+      [req.body.ski_or_board, req.body.username , req.body.mtn_name, parseInt(req.body.skill_level)]
+    );
 
+  //   console.log('Registration successful.');
+  //   res.status(200).json({ message: 'Registration successful.' });
+  // } catch (error) {
+  //   console.error('Error: ', error);
+  //   res.status(200).json({ message: 'Invalid registration.' });
+  // }
+  console.log('fetched response');
+  res.render("pages/register", {message: "Registration Successful"});
+  
+} catch (error) {
+  console.log('error: ', error);
+  res.redirect("/register");
+}
+});
 
 // Login API
 app.post("/login", async (req, res) => {
@@ -125,7 +137,9 @@ app.post("/login", async (req, res) => {
         res.status(200).json({ status: 'error', message: 'Incorrect username or password.' });
       } else {
         // Successful login, return a success response
+        res.redirect("/discover")
         res.status(200).json({ status: 'success', message: 'User login successful' });
+        
       }
     }
   } catch (error) {
@@ -137,11 +151,42 @@ app.post("/login", async (req, res) => {
   }
 });
 
-
+// About API
 app.get("/about", (req, res) => {
   res.render("pages/about")
 });
 
+// Discover API
+app.get("/discover", (req, res) => {
+  res.render("pages/discover")
+});
+
+app.get("/api/discover/matches", (req, res) => {
+  // Logic to get matches based on the logged-in user
+  const loggedInUser = req.session.user; // Assuming you store the logged-in user in the session
+  const matchingCounts = getMatchingCounts(loggedInUser);
+
+  // Respond with the matching counts
+  res.json({ matches: matchingCounts });
+});
+
+// Helper function to get matching counts
+function getMatchingCounts(loggedInUser) {
+  const matchingCounts = [];
+
+  // Loop through each row of the table
+  tableData.forEach(row => {
+      if (row.first_name !== loggedInUser) {
+          // Compare attributes and count matches
+          const matchCount = countMatchingAttributes(row, tableData.find(user => user.first_name === loggedInUser));
+          matchingCounts.push({ first_name: row.first_name, matchCount });
+      }
+  });
+
+  return matchingCounts;
+}
+
+// Logout API
 app.get("/logout", (req, res) => {
   req.session.destroy();
   res.render("pages/login", {message: "Logged out Successfully"});
@@ -155,6 +200,10 @@ const auth = (req, res, next) => {
   }
   next();
 };
+
+app.get("/discover", async (req, res) => {
+  
+});
 
 // Authentication Required
 app.use(auth);

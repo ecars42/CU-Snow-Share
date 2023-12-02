@@ -4,52 +4,92 @@
 <main>
   <div class="container">
     <!-- THE REST OF YOUR HTML CODE GOES HERE -->
+    <% if (locals.message) { %>
+        <div
+          class="alert alert-<%- locals.error ? 'danger' : 'success' %>"
+          role="alert"
+        >
+          <%= message %>
+        </div>
+        <% } %>
 
     <h1>Register</h1>
     <form action="/register" method="POST">
-
-        <div class="form-group">
-            <label for="username">Username:</label>
-            <input type="username" id="username" name="username" />
+        <div class="form-group my-2">
+            <label for="username">Username</label>
+            <input type="username" class="form-control" placeholder="Enter Username" name="username">
+        </div>            
+        <div class="form-group my-2">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" placeholder="Password" name="password">
         </div>
-      
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" />
+        <div class="form-group my-2">
+            <label for="email">Email address</label>
+            <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email" name="email">
         </div>
-
-        <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" pattern=".+@colorado\.edu" required/>
-        </div>
-
-        <a style = "color: rgb(0, 0, 0);">Skill Ratings -> Green - 1; Blue - 2; Black - 3; Double Black - 4; Park - 5</a>
-        <div class="form-group">
-            <label for="skill">Skill Level:</label>
-            <input type="skill" id="skill" name="skill" />
+        <div class="form-group my-2">
+            <label for="name">Name</label>
+            <input type="name" class="form-control" aria-describedby="emailHelp" placeholder="Enter First Name" name="name">
         </div>
 
-        <div class="form-group">
-            <label for="perf">Mountain Preference:</label>
-            <input type="perd" id="perf" name="perf"/>
+        <div class="form-group my-2">
+            <label for="name">Mountain Name</label>
+            <input type="mtn_name" class="form-control" aria-describedby="emailHelp" placeholder="Enter Your Favorite Mountain's Name" name="mtn_name">
         </div>
 
-        <div class="form-group">
-          <label for="skiOrBoard" class="custom-text-color">Ski or Board:</label>
-          <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle custom-text-color" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Ski or Board
-              </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item custom-text-color" href="#">Ski</a>
-                  <a class="dropdown-item custom-text-color" href="#">Board</a>
-              </div>
-          </div>
+
+        <div class="form-group my-1">          
+            <a style = "color: rgb(0, 0, 0);">Skill Ratings -> Green - 1; Blue - 2; Black - 3; Double Black - 4; Park - 5</a>
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="inputGroupSelect01">Skill Level</label>
+                <select class="form-select" name="skill_level">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                </div>
         </div>
+
+<!-- 
+        <div class="form-group">
+            <div class="mb-3">
+              <label for="phoneNumber" class="form-label">Phone Number</label>
+              <input type="tel" class="form-control" id="phoneNumber" placeholder="Enter phone number" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
+              <div class="form-text">Please enter a valid phone number (e.g., 123-456-7890).</div>
+            </div>
+        </div> -->
+
+        <div class="form-group my-1">     
+            <a style = "color: rgb(0, 0, 0);">Select whether you Ski or Board </a>   
+            <div class="form-check">
+            <input id="ski" class="form-check-input" type="radio" name="ski_or_board" value="ski">
+            <label class="form-check-label" for="ski">
+                Ski
+            </label>
+            </div>
+            <div class="form-check">
+            <input id="board" class="form-check-input" type="radio" name="ski_or_board"  value="board" checked>
+            <label class="form-check-label" for="board">
+                Board
+            </label>
+            </div>
+        </div>
+
+        <!-- phone number input -->
+        <!-- <div class="form-group">
+            <div class="mb-3">
+              <label for="phoneNumber" class="form-label">Phone Number</label>
+              <input type="tel" class="form-control" id="phoneNumber" placeholder="Enter phone number" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required>
+              <div class="form-text">Please enter a valid phone number (e.g., 123-456-7890).</div>
+            </div>
+        </div> -->
       
         <div class="form-group">
             <input type="submit" value="register" />
         </div>
+        
     </form>
   </div>
 </main>

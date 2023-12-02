@@ -40,7 +40,7 @@ it('positive: /login', (done) => {
         console.error(err); // Log any errors
       }
       expect(res).to.have.status(200);
-      expect(res.body.status).to.equals('error');
+      expect(res.body.status).to.equals('success');
       expect(res.body.message).to.equals('User login successful');
       done();
     });
