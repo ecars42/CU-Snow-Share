@@ -23,7 +23,7 @@ services:
       - ./:/home/node/app
       # - ./:/usr/src/app
       # - /usr/src/app/node_modules
-    command: 'npm run testandrun'
+    command: 'npm run start'
 # This defines our volume(s), which will persist throughout startups.
 # If you want to get rid of a hanging volume, e.g. to test your database init,
 # run `docker-compose rm -v`. Note that this will remove ALL of your data, so
