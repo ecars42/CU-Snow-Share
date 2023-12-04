@@ -56,6 +56,8 @@ app.use(
   })
 );
 
+app.use(express.static('resources'));
+
 
 
 // *****************************************************
@@ -84,14 +86,15 @@ app.get("/register", (req, res) => {
 // Register API
 app.post("/register", async (req, res) => {
   try {
-    // Check if both username and password are provided
-    //not needed
+    // Check if both username, password, name, and email are provided
     if (!req.body.username || !req.body.password || !req.body.name || !req.body.email) {
-      return res.status(200).json({ message: 'Invalid registration.' });
+      res.render("pages/register", {message: "Invalid registration."});
+      return; // Exit the function to avoid further execution
     }
 
     // Hash the password using bcrypt library
     const hash = await bcrypt.hash(req.body.password, 10);
+    console.log(hash);
 
     // Insert username, hashed password, name, and email into the 'students' table
     await db.none(
@@ -99,53 +102,53 @@ app.post("/register", async (req, res) => {
       [req.body.username, req.body.name, req.body.email, hash]
     );
 
+    // Insert other user details into the 'tags' table (adjust as needed)
     await db.none(
       "INSERT INTO tags(ski_or_board, username, mtn_name, skill_level) VALUES ($1, $2, $3, $4)",
-      [req.body.ski_or_board, req.body.username , req.body.mtn_name, parseInt(req.body.skill_level)]
+      [req.body.ski_or_board, req.body.username, req.body.mtn_name, parseInt(req.body.skill_level)]
     );
 
-  //   console.log('Registration successful.');
-  //   res.status(200).json({ message: 'Registration successful.' });
-  // } catch (error) {
-  //   console.error('Error: ', error);
-  //   res.status(200).json({ message: 'Invalid registration.' });
-  // }
-  console.log('fetched response');
-  res.render("pages/register", {message: "Registration Successful"});
+    res.render("pages/login", {message: "Registration successful."});
   
-} catch (error) {
-  console.log('error: ', error);
-  res.redirect("/register");
-}
+  } catch (error) {
+    console.log('error: ', error);
+    res.redirect("pages/register");
+  }
 });
 
-// Login API
 app.post("/login", async (req, res) => {
   try {
     // Check if the username exists in the students table
     const student_query = 'SELECT * FROM students WHERE username = $1';
     const student_match = await db.any(student_query, [req.body.username]);
+    var pass = '';
 
     if (student_match.length === 0) {
       // Student not found, return an error response
-      res.status(200).json({ status: 'error', message: 'Incorrect username or password' });
+      res.render("pages/login", {message: "Incorrect username or password."});
     } else {
-      const match_pass = await bcrypt.compare(req.body.password, student_match[0].password);
+      if(student_match[0].password.startsWith("$2a"))
+      {
+        pass = student_match[0].password
+      }
+      else {
+        pass = await bcrypt.hash(student_match[0].password, 10);
+      }
+      console.log(pass);
+      // Compare entered password with hashed password from the database
+      const passwordMatch = await bcrypt.compare(req.body.password, pass);
 
-      if (!match_pass) {
+      if (!passwordMatch) {
         // Incorrect password, return an error response
-        res.status(200).json({ status: 'error', message: 'Incorrect username or password.' });
+        res.render("pages/login", {message: "Incorrect username or password."});
       } else {
         // Successful login, return a success response
-        res.redirect("/discover")
-        res.status(200).json({ status: 'success', message: 'User login successful' });
-        
+        res.render("pages/discover", {message: "User login successful!"});
       }
     }
   } catch (error) {
     // Log the error
     console.log('error: ', error);
-
     // Internal server error, return an error response
     res.status(500).json({ status: 'error', message: 'Internal server error' });
   }
