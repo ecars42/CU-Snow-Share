@@ -1,1 +1,6 @@
-submitted file directory 11/8 - ethan
+MILESTONE SUBMISSIONS
+Nov 16: (Aloken) Docker container runs successfully and the initial website displays. Stylized About page fully completed.
+Nov 16: (Ethan) Repository is set up with proper structure. Initial Index and server.spec added to repository.
+Nov 27: (Anusha) Docker container issues resolved. Index & server.spec updated. Initial Discover page functions properly.
+Nov 29: (Holden) SQL and Index updated. Register page fully functional.
+Dec 4: (Austin) Login page fully functional. About page displays photos.

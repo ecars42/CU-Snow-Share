@@ -51,11 +51,10 @@ app.use(
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
-    saveUninitialized: false,
     resave: false,
+    saveUninitialized: true,
   })
 );
-
 app.use(express.static('resources'));
 
 
@@ -127,7 +126,7 @@ app.post("/login", async (req, res) => {
       // Student not found, return an error response
       res.render("pages/login", {message: "Incorrect username or password."});
     } else {
-      if(student_match[0].password.startsWith("$2a"))
+      if(student_match[0].password.startsWith("$2a")) 
       {
         pass = student_match[0].password
       }
@@ -143,6 +142,7 @@ app.post("/login", async (req, res) => {
         res.render("pages/login", {message: "Incorrect username or password."});
       } else {
         // Successful login, return a success response
+        req.session.user = student_match[0]; // Dynamically 
         res.render("pages/discover", {message: "User login successful!"});
       }
     }
@@ -161,27 +161,28 @@ app.get("/about", (req, res) => {
 
 // Discover API
 app.get("/discover", (req, res) => {
-  res.render("pages/discover")
+  const loggedInUser = req.session.user;
+  res.render("pages/discover", { loggedInUser });
 });
 
 app.get("/api/discover/matches", (req, res) => {
   // Logic to get matches based on the logged-in user
-  const loggedInUser = req.session.user; // Assuming you store the logged-in user in the session
-  const matchingCounts = getMatchingCounts(loggedInUser);
+  const loggedInUsername = req.session.user.username; // Assuming you store the logged-in user in the session
+  const matchingCounts = getMatchingCounts(loggedInUsername);
 
   // Respond with the matching counts
   res.json({ matches: matchingCounts });
 });
 
 // Helper function to get matching counts
-function getMatchingCounts(loggedInUser) {
+function getMatchingCounts(loggedInUsername) {
   const matchingCounts = [];
 
   // Loop through each row of the table
   tableData.forEach(row => {
-      if (row.first_name !== loggedInUser) {
+      if (row.first_name !== loggedInUsername) {
           // Compare attributes and count matches
-          const matchCount = countMatchingAttributes(row, tableData.find(user => user.first_name === loggedInUser));
+          const matchCount = countMatchingAttributes(row, tableData.find(user => user.first_name === loggedInUsername));
           matchingCounts.push({ first_name: row.first_name, matchCount });
       }
   });
