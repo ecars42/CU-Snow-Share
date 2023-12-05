@@ -1,35 +1,31 @@
-INSERT INTO students (name, email) VALUES
-('Janek', 'jandrich0@colorado.edu'),
-('Geri', 'ghaslock1@colorado.edu'),
-('Ewen', 'edeetlefs2@colorado.edu'),
-('Towney', 'tabbess3@colorado.edu'),
-('Gradey', 'gcolter4@colorado.edu'),
-('Willie', 'wspillman5@colorado.edu'),
-('Aidan', 'abaggally6@colorado.edu'),
-('Bee', 'blendrem7@colorado.edu'),
-('Osborne', 'ofumagalli8@colorado.edu'),
-('Hurleigh', 'hslocket9@colorado.edu'),
-('Frederic', 'frobartsa@colorado.edu'),
-('Fax', 'ffrereb@colorado.edu'),
-('Leia', 'ldudlestonec@colorado.edu');
+INSERT INTO students (username, name, email, password) VALUES
+('icsp', 'Ice Spice', 'iscp@colorado.edu', 'munch'),
+('jandrich0', 'Janek', 'jandrich0@colorado.edu', 'default'),
+('ghaslock1', 'Geri', 'ghaslock1@colorado.edu', 'default'),
+('edeetlefs2', 'Ewen', 'edeetlefs2@colorado.edu', 'default'),
+('tabbess3', 'Towney', 'tabbess3@colorado.edu', 'default'),
+('gcolter4', 'Gradey', 'gcolter4@colorado.edu', 'default'),
+('wspillman5', 'Willie', 'wspillman5@colorado.edu', 'default'),
+('abaggally6', 'Aidan', 'abaggally6@colorado.edu', 'default'),
+('blendrem7', 'Bee', 'blendrem7@colorado.edu', 'default'),
+('ofumagalli8', 'Osborne', 'ofumagalli8@colorado.edu', 'default'),
+('hslocket9', 'Hurleigh', 'hslocket9@colorado.edu', 'default'),
+('frobartsa', 'Frederic', 'frobartsa@colorado.edu', 'default'),
+('ffrereb', 'Fax', 'ffrereb@colorado.edu', 'default'),
+('ldudlestonec', 'Leia', 'ldudlestonec@colorado.edu', 'default');
 
-INSERT INTO mountains(resort_id, name, skill_level, preference, mode_trans) VALUES
-(1, 'Winter Park', 2, 'ski', 'car');
-
-INSERT INTO tags (level, name, location, ski_or_board) VALUES
-(1, 'Janek', 'Eldora', 'ski'),
-(1, 'Geri', 'Copper', 'board'),
-(2, 'Ewen', 'Winter Park', 'board'),
-(3, 'Towney', 'Copper', 'board'),
-(4, 'Gradey', 'Breckenridge', 'ski'),
-(1, 'Willie', 'Eldora', 'board'),
-(2, 'Aidan', 'Eldora', 'board'),
-(1, 'Bee', 'Winter Park', 'ski'),
-(1, 'Osborne', 'Breckenridge', 'ski'),
-(1, 'Hurleigh', 'Copper', 'ski'),
-(2, 'Frederic', 'Eldora', 'ski'),
-(2, 'Fax', 'Winter Park', 'board'),
-(3, 'Leia', 'Breckenridge', 'board');
-
-INSERT INTO users(username, password) VALUES
-('icespice', 'munch');
+INSERT INTO tags (ski_or_board, username, mtn_name, skill_level) VALUES
+('ski', 'icsp', 'Copper', 2),
+('ski', 'jandrich0', 'Eldora', 1),
+('board', 'ghaslock1', 'Copper', 2),
+('board', 'edeetlefs2', 'Winter Park', 3),
+('board', 'tabbess3', 'Copper', 3),
+('ski', 'gcolter4', 'Breckenridge', 4),
+('board', 'wspillman5', 'Eldora', 1),
+('board', 'abaggally6', 'Eldora', 2),
+('ski', 'blendrem7', 'Winter Park', 1),
+('ski', 'ofumagalli8', 'Breckenridge', 1),
+('ski', 'hslocket9', 'Copper', 1),
+('ski', 'frobartsa', 'Eldora', 2),
+('board', 'ffrereb', 'Winter Park', 3),
+('board', 'ldudlestonec', 'Breckenridge', 4);

@@ -1,25 +1,17 @@
 CREATE TABLE students(
+    username VARCHAR(50) PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
-    email VARCHAR(200) NOT NULL
-);
-
-CREATE TABLE mountains(
-    resort_id SERIAL PRIMARY KEY,
-    name VARCHAR(50) NOT NULL,
-    skill_level SMALLINT NOT NULL,
-    preference VARCHAR(15) NOT NULL,
-    mode_trans VARCHAR(30) NOT NULL
-    
+    email VARCHAR(200) NOT NULL,
+    password VARCHAR(60) NOT NULL
 );
 
 CREATE TABLE tags(
-    level SMALLINT NOT NULL,
-    name VARCHAR(50) NOT NULL,
-    location VARCHAR(50) NOT NULL,
-    ski_or_board VARCHAR(30) NOT NULL
-);
+    username VARCHAR(50) PRIMARY KEY, -- foreign key from students table, need a foreign key
+    ski_or_board VARCHAR(30) NOT NULL, 
+    mtn_name VARCHAR(50) NOT NULL, 
+    skill_level SMALLINT NOT NULL,
 
-CREATE TABLE users(
-    username VARCHAR(50) PRIMARY KEY,
-    password VARCHAR(60) NOT NULL
+    CONSTRAINT fk_username 
+    FOREIGN KEY (username) REFERENCES students(username)
+    ON DELETE CASCADE
 );

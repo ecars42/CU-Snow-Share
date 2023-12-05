@@ -41,6 +41,11 @@ db.connect()
 
 app.set('view engine', 'ejs'); // set the view engine to EJS
 app.use(bodyParser.json()); // specify the usage of JSON for parsing request body.
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
 
 // initialize session variables
 app.use(
@@ -51,11 +56,9 @@ app.use(
   })
 );
 
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  })
-);
+app.use(express.static('resources'));
+
+
 
 // *****************************************************
 // <!-- Section 4 : API Routes -->
@@ -65,13 +68,11 @@ app.get('/welcome', (req, res) => {
   res.json({status: 'success', message: 'Welcome!'});
 });
 
-// TODO - Include your API routes here
 app.get("/home", (req, res) => {
     res.redirect("/login"); //this will call the /anotherRoute route in the API
   });
 
-app.get("/login", (req, res) => {
-  //do something
+app.get("/login", async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
@@ -83,69 +84,112 @@ app.get("/register", (req, res) => {
 });
 
 // Register API
-
-
 app.post("/register", async (req, res) => {
   try {
-    // Check if both username and password are provided
-    if (!req.body.username || !req.body.password) {
-      return res.status(200).json({ message: 'Invalid registration.' }); // Updated status to 200
+    // Check if both username, password, name, and email are provided
+    if (!req.body.username || !req.body.password || !req.body.name || !req.body.email) {
+      res.render("pages/register", {message: "Invalid registration."});
+      return; // Exit the function to avoid further execution
     }
 
     // Hash the password using bcrypt library
-    const hash = await bcrypt.hash(req.body.password, 10); // Use a proper saltRounds value (e.g., 10)
+    const hash = await bcrypt.hash(req.body.password, 10);
+    console.log(hash);
 
-    // Insert username and hashed password into the 'users' table
+    // Insert username, hashed password, name, and email into the 'students' table
     await db.none(
-      "INSERT INTO users(username, password) VALUES ($1, $2) ON CONFLICT (username) DO NOTHING",
-      [req.body.username, hash] // Updated column name to match the request body
+      "INSERT INTO students(username, name, email, password) VALUES ($1, $2, $3, $4)",
+      [req.body.username, req.body.name, req.body.email, hash]
     );
 
-    console.log('Registration successful.');
-    res.status(200).json({ message: 'Registration successful.' });
+    // Insert other user details into the 'tags' table (adjust as needed)
+    await db.none(
+      "INSERT INTO tags(ski_or_board, username, mtn_name, skill_level) VALUES ($1, $2, $3, $4)",
+      [req.body.ski_or_board, req.body.username, req.body.mtn_name, parseInt(req.body.skill_level)]
+    );
+
+    res.render("pages/login", {message: "Registration successful."});
+  
   } catch (error) {
-    console.error('Error: ', error);
-    res.status(200).json({ message: 'Invalid registration.' }); // Updated status to 200
+    console.log('error: ', error);
+    res.redirect("pages/register");
   }
 });
 
-
-
-// Login API
 app.post("/login", async (req, res) => {
   try {
-    // Check if the password from the request matches with the password in the DB
-    const user_query = 'SELECT * FROM users WHERE username = $1';
-    const user_match = await db.any(user_query, [req.body.username]);
+    // Check if the username exists in the students table
+    const student_query = 'SELECT * FROM students WHERE username = $1';
+    const student_match = await db.any(student_query, [req.body.username]);
+    var pass = '';
 
-    if (user_match.length === 0) {
-      // User not found, return an error response
-      res.status(200).json({ status: 'error', message: 'Incorrect username or password.' });
+    if (student_match.length === 0) {
+      // Student not found, return an error response
+      res.render("pages/login", {message: "Incorrect username or password."});
     } else {
-      const match_pass = await bcrypt.compare(req.body.password, user_match[0].password);
+      if(student_match[0].password.startsWith("$2a"))
+      {
+        pass = student_match[0].password
+      }
+      else {
+        pass = await bcrypt.hash(student_match[0].password, 10);
+      }
+      console.log(pass);
+      // Compare entered password with hashed password from the database
+      const passwordMatch = await bcrypt.compare(req.body.password, pass);
 
-      if (req.body.password === user_match[0].password) {
+      if (!passwordMatch) {
         // Incorrect password, return an error response
-        res.status(200).json({ status: 'success', message: 'User login successful.' });
+        res.render("pages/login", {message: "Incorrect username or password."});
       } else {
         // Successful login, return a success response
-        res.status(200).json({ status: 'error', message: 'Incorrect username or password.' });
+        res.render("pages/discover", {message: "User login successful!"});
       }
     }
   } catch (error) {
     // Log the error
     console.log('error: ', error);
-
     // Internal server error, return an error response
     res.status(500).json({ status: 'error', message: 'Internal server error' });
   }
 });
 
-
+// About API
 app.get("/about", (req, res) => {
   res.render("pages/about")
 });
 
+// Discover API
+app.get("/discover", (req, res) => {
+  res.render("pages/discover")
+});
+
+app.get("/api/discover/matches", (req, res) => {
+  // Logic to get matches based on the logged-in user
+  const loggedInUser = req.session.user; // Assuming you store the logged-in user in the session
+  const matchingCounts = getMatchingCounts(loggedInUser);
+
+  // Respond with the matching counts
+  res.json({ matches: matchingCounts });
+});
+
+// Helper function to get matching counts
+function getMatchingCounts(loggedInUser) {
+  const matchingCounts = [];
+
+  // Loop through each row of the table
+  tableData.forEach(row => {
+      if (row.first_name !== loggedInUser) {
+          // Compare attributes and count matches
+          const matchCount = countMatchingAttributes(row, tableData.find(user => user.first_name === loggedInUser));
+          matchingCounts.push({ first_name: row.first_name, matchCount });
+      }
+  });
+
+  return matchingCounts;
+}
+
+// Logout API
 app.get("/logout", (req, res) => {
   req.session.destroy();
   res.render("pages/login", {message: "Logged out Successfully"});
@@ -159,6 +203,10 @@ const auth = (req, res, next) => {
   }
   next();
 };
+
+app.get("/discover", async (req, res) => {
+  
+});
 
 // Authentication Required
 app.use(auth);
