@@ -84,11 +84,11 @@ app.get("/register", (req, res) => {
 
 app.get("/profile", (req, res) => {
   res.render("pages/profile", {
-    username: req.session.students.username,
-    name: req.session.students.name,
-    email: req.session.students.email,
-    mountain: req.session.tags.mtn_name,
-    skill_level: req.session.tags.skill_level,
+    username: req.body.students.username,
+    name: req.body.students.name,
+    email: req.body.students.email,
+    mountain: req.body.tags.mtn_name,
+    skill_level: req.body.tags.skill_level,
     ski_or_board: req.session.tags.ski_or_board,
   });
 });
