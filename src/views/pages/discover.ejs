@@ -3,6 +3,52 @@
 
 <!DOCTYPE html>
 <html>
+<style>
+    #img1 {
+        border: 2px solid black;
+        padding: 25px;
+        background: url(/img/flatties.jpg);
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+    }
+
+    #tbox1 {
+        background-color: rgb(208, 247, 254);
+        width: auto;
+        text-align: center;
+        border: 2px solid rgb(0, 0, 0);
+        padding: 50px;
+        margin: 20px;
+    }
+    #tbox2 {
+        background-color: rgb(208, 247, 254);
+        width: 500px;
+        text-align: left;
+        border: 2px solid rgb(0, 0, 0);
+        padding: 50px;
+        margin: 20px;
+    }
+    
+    </style>
+    </head>
+    <body>
+    
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .imgbox {
+            display: grid;
+            height: 100%;
+        }
+        .center-fit {
+            max-width: 100%;
+            max-height: 100vh;
+            margin: auto;
+        }
+    </style>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,84 +58,92 @@
     </style>
 </head>
 <body>
-    <h1>Find your ski/snowboarding partners! Click on the button below to see their name and contact email.</h1>
+    <div id="img1">
+        <div id="tbox1">
+            <p>Welcome to the discover page. On this page we will look over your profile and match you with other students that share similar skills and interests as you. Click the button below to find compatibilities!</p>
+            <button class="btn btn-outline-dark" onclick="compareData('<%= JSON.stringify(loggedInUser) %>')">Find Ski/Board Partners</button>
+        </div>
+
 
     <!-- Button to trigger the comparison -->
-    <button onclick="compareData()">Compare Data</button>
-
-    <!-- Display area for matched primary keys -->
-    <div id="matchedKeys">
-        <h2>Matched Keys</h2>
-        <ul id="matchedList"></ul>
-    </div>
 
     <script>
-        const tableData = [
-        { first_name: 'Janek', ski_or_board: 'ski', mtn_name: 'Eldora', skill_level: 1 },
-        { first_name: 'Geri', ski_or_board: 'board', mtn_name: 'Copper', skill_level: 2 },
-        { first_name: 'Ewen', ski_or_board: 'board', mtn_name: 'Winter Park', skill_level: 3 },
-        { first_name: 'Towney', ski_or_board: 'board', mtn_name: 'Copper', skill_level: 3 },
-        { first_name: 'Gradey', ski_or_board: 'ski', mtn_name: 'Breckenridge', skill_level: 4 },
-        { first_name: 'Willie', ski_or_board: 'board', mtn_name: 'Eldora', skill_level: 1 },
-        { first_name: 'Aidan', ski_or_board: 'board', mtn_name: 'Eldora', skill_level: 2 },
-        { first_name: 'Bee', ski_or_board: 'ski', mtn_name: 'Winter Park', skill_level: 1 },
-        { first_name: 'Osborne', ski_or_board: 'ski', mtn_name: 'Breckenridge', skill_level: 1 },
-        { first_name: 'Hurleigh', ski_or_board: 'ski', mtn_name: 'Copper', skill_level: 1 },
-        { first_name: 'Frederic', ski_or_board: 'ski', mtn_name: 'Eldora', skill_level: 2 },
-        { first_name: 'Fax', ski_or_board: 'board', mtn_name: 'Winter Park', skill_level: 3 },
-        { first_name: 'Leia', ski_or_board: 'board', mtn_name: 'Breckenridge', skill_level: 4 }
-      ];
+    // Array to store the count of matching attributes for each row
+    const matchingTags = [];
 
-        // Function to trigger the comparison
-        function compareData() {
-            const loggedInUser = 'Janek';  // Replace with the actual logged-in user
+    // Function to trigger the comparison
+    async function compareData(loggedInUser) {
+        try {
+            // Fetch data from the server using AJAX or fetch API
+            const response = await fetch('http://localhost:3000/api/getUserData');
+            const userData = await response.json();
+            // console.log(userData); //testing purposes
 
-            // Array to store the count of matching attributes for each row
-            const matchingCounts = [];
+            // Find the logged-in user in the data
+            const loggedInUsername = userData.find(user => user.username === loggedInUser.username);
+            console.log(loggedInUsername);
 
             // Loop through each row of the table
-            tableData.forEach(row => {
-                if (row.first_name !== loggedInUser) {
+            userData.forEach(row => {
+                if (row.username !== loggedInUser.username) {
                     // Compare attributes and count matches
-                    const matchCount = countMatchingAttributes(row, tableData.find(user => user.first_name === loggedInUser));
-                    matchingCounts.push({ first_name: row.first_name, matchCount });
+                    const rowAsString = JSON.stringify(row);
+                    findAndDisplayMatches(rowAsString, loggedInUser);
+                    // console.log('User:', loggedInUser) // testing purposes
                 }
             });
 
-            // Display matched keys on the webpage
-            displayMatchedKeys(matchingCounts);
+        } catch (error) {
+            console.error('Error fetching data:', error);
         }
+    }
 
-        // Function to count matching attributes for two rows
-        function countMatchingAttributes(row1, row2) {
-            let matchCount = 0;
+    // Function to identify and display users that match
+    function findAndDisplayMatches(user1, user2) {
+        console.log('Row 1:', user1);
+        console.log('Row 2:', user2);
 
-            // Compare attributes (modify this based on your criteria)
-            if (row1.ski_or_board === row2.ski_or_board) {
-                matchCount++;
-            }
-            if (row1.mtn_name === row2.mtn_name) {
-                matchCount++;
-            }
-            return matchCount;
-        }
+        // Parse the JSON strings
+        const parsedUser1 = JSON.parse(user1);
+        const parsedUser2 = JSON.parse(user2);
 
-        // Function to display matched keys on the webpage
-        function displayMatchedKeys(matchingCounts) {
+        // Compare ski/board and mountain preferences
+        if (parsedUser1.ski_or_board === parsedUser2.ski_or_board && parsedUser1.mtn_name === parsedUser2.mtn_name) {
+            console.log('Match found:', parsedUser1.username);
+
             const matchedList = document.getElementById('matchedList');
 
             // Clear previous results
             matchedList.innerHTML = '';
 
-            // Display matched keys with match count
-            matchingCounts.forEach(item => {
-                if (item.matchCount >= 2) {
-                    const listItem = document.createElement('li');
-                    listItem.textContent = `${item.first_name} (Match Count: ${item.matchCount})`;
-                    matchedList.appendChild(listItem);
-                }
-            });
+            // Display matched keys with contact information
+            const listItem = document.createElement('li');
+            listItem.textContent = `${parsedUser1.username} [Contact: ${parsedUser1.username}@colorado.edu]`;
+            matchedList.appendChild(listItem);
+        } else {
+            console.log('No match found.');
         }
+    }
+
     </script>
+
+    <!-- Display area for matched primary keys -->
+    <div id="tbox2" style="color: black;" id="matchedKeys">
+        <h2>Matched Keys</h2>
+        <ul style="text-align: left;" id="matchedList"></ul>
+    </div>
+
+
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+
+    
 </body>
 </html>
