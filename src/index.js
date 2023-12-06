@@ -51,11 +51,10 @@ app.use(
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
-    saveUninitialized: false,
     resave: false,
+    saveUninitialized: false,
   })
 );
-
 app.use(express.static('resources'));
 
 
@@ -81,6 +80,17 @@ app.get("/login", async (req, res) => {
 
 app.get("/register", (req, res) => {
   res.render("pages/register")
+});
+
+app.get("/profile", (req, res) => {
+  res.render("pages/profile", {
+    username: req.body.students.username,
+    name: req.body.students.name,
+    email: req.body.students.email,
+    mountain: req.body.tags.mtn_name,
+    skill_level: req.body.tags.skill_level,
+    ski_or_board: req.session.tags.ski_or_board,
+  });
 });
 
 // Register API
@@ -109,10 +119,10 @@ app.post("/register", async (req, res) => {
     );
 
     res.render("pages/login", {message: "Registration successful."});
-  
+ 
   } catch (error) {
     console.log('error: ', error);
-    res.redirect("pages/register");
+    res.redirect("pages/login");
   }
 });
 
@@ -142,8 +152,16 @@ app.post("/login", async (req, res) => {
         // Incorrect password, return an error response
         res.render("pages/login", {message: "Incorrect username or password."});
       } else {
-        // Successful login, return a success response
-        res.render("pages/discover", {message: "User login successful!"});
+        // Fetch the user's attributes from the 'tags' table. This is what will be used in discover.
+        const tags_query = 
+        `SELECT tags.*, students.name, students.email
+        FROM tags
+        JOIN students ON tags.username = students.username
+        WHERE tags.username = $1`;
+        const tags_info = await db.oneOrNone(tags_query, [req.body.username]);
+        req.session.user = tags_info; // For discover.
+        req.session.save()
+        res.redirect("/discover"); // Successful login.
       }
     }
   } catch (error) {
@@ -154,47 +172,6 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// About API
-app.get("/about", (req, res) => {
-  res.render("pages/about")
-});
-
-// Discover API
-app.get("/discover", (req, res) => {
-  res.render("pages/discover")
-});
-
-app.get("/api/discover/matches", (req, res) => {
-  // Logic to get matches based on the logged-in user
-  const loggedInUser = req.session.user; // Assuming you store the logged-in user in the session
-  const matchingCounts = getMatchingCounts(loggedInUser);
-
-  // Respond with the matching counts
-  res.json({ matches: matchingCounts });
-});
-
-// Helper function to get matching counts
-function getMatchingCounts(loggedInUser) {
-  const matchingCounts = [];
-
-  // Loop through each row of the table
-  tableData.forEach(row => {
-      if (row.first_name !== loggedInUser) {
-          // Compare attributes and count matches
-          const matchCount = countMatchingAttributes(row, tableData.find(user => user.first_name === loggedInUser));
-          matchingCounts.push({ first_name: row.first_name, matchCount });
-      }
-  });
-
-  return matchingCounts;
-}
-
-// Logout API
-app.get("/logout", (req, res) => {
-  req.session.destroy();
-  res.render("pages/login", {message: "Logged out Successfully"});
-});
-
 // Authentication Middleware.
 const auth = (req, res, next) => {
   if (!req.session.user) {
@@ -203,13 +180,75 @@ const auth = (req, res, next) => {
   }
   next();
 };
+app.use(auth);
 
-app.get("/discover", async (req, res) => {
-  
+
+// About API
+app.get("/about", (req, res) => {
+  res.render("pages/about")
 });
 
-// Authentication Required
-app.use(auth);
+// Helper route (Discover)
+app.get('/api/getUserData', async (req, res) => {
+  try {
+    // Fetch all user data from the database
+    const userData = await db.many('SELECT * FROM tags');
+
+    // Respond with the user data
+    res.json(userData);
+  } catch (error) {
+    console.error('Error fetching user data:', error.message || error);
+    res.status(500).json({ status: 'error', message: 'Internal server error' });
+  }
+});
+
+// Discover API
+app.get("/discover", (req, res) => {
+  const loggedInUser = req.session.user;
+  res.render("pages/discover", { loggedInUser });
+});
+
+// Discover API
+app.get("/api/discover/matches", async (req, res) => {
+  try {
+    // Check if the session contains user information
+    const loggedInUser = req.session.user;
+
+    if (!loggedInUser) {
+      console.error('No logged-in user in the session.');
+      res.status(401).json({ status: 'error', message: 'Unauthorized' });
+      return;
+    }
+
+    const loggedInUsername = loggedInUser.username;
+
+    // Log the loggedInUsername to check if it's correct
+    console.log('Logged-in username:', loggedInUsername);
+
+    // Fetch the user's attributes from the database
+    const userFromDB = await db.oneOrNone('SELECT * FROM tags WHERE username = $1', [loggedInUsername]);
+
+    // Log the userFromDB to check if it's found
+    console.log('User from database:', userFromDB);
+
+    if (!userFromDB) {
+      console.error('Logged-in user not found in the database.');
+      res.status(404).json({ status: 'error', message: 'Logged-in user not found' });
+      return;
+    }
+
+  } catch (error) {
+    console.error('Error getting matching counts:', error.message || error);
+    res.status(500).json({ status: 'error', message: 'Internal server error' });
+  }
+});
+
+// Logout API
+app.get("/logout", (req, res) => {
+  req.session.destroy();
+  res.render("pages/login", {message: "Logged out Successfully"});
+});
+
 
 // *****************************************************
 // <!-- Section 5 : Start Server-->
