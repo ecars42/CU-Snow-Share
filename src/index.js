@@ -137,7 +137,7 @@ app.post("/login", async (req, res) => {
       // Student not found, return an error response
       res.render("pages/login", {message: "Incorrect username or password."});
     } else {
-      if(student_match[0].password.startsWith("$2a"))
+      if(student_match[0].password.startsWith("$2a")) 
       {
         pass = student_match[0].password
       }

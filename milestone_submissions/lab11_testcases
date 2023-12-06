@@ -7,5 +7,3 @@ Test case for feature 2: GET snowshare partners (tag-matching function)
 - User activity to be tested: ability for the user to be matched to other users with similar tags
 - Test data to be used: students, tags, and mountains table data
 - Test results to be checked: user will be able to find skiing/snowboarding partners
-
-updated 11/16 - anusha

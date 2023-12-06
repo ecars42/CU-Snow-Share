@@ -66,8 +66,7 @@
 
 
     <!-- Button to trigger the comparison -->
-
-    <script>
+<script>
     // Array to store the count of matching attributes for each row
     const matchingTags = [];
 
@@ -85,7 +84,8 @@
 
             // Loop through each row of the table
             userData.forEach(row => {
-                if (row.username !== loggedInUser.username) {
+
+                if (row.username !== loggedInUsername) {
                     // Compare attributes and count matches
                     const rowAsString = JSON.stringify(row);
                     findAndDisplayMatches(rowAsString, loggedInUser);
@@ -110,22 +110,22 @@
         // Compare ski/board and mountain preferences
         if (parsedUser1.ski_or_board === parsedUser2.ski_or_board && parsedUser1.mtn_name === parsedUser2.mtn_name) {
             console.log('Match found:', parsedUser1.username);
-
+            
             const matchedList = document.getElementById('matchedList');
 
-            // Clear previous results
-            matchedList.innerHTML = '';
-
             // Display matched keys with contact information
-            const listItem = document.createElement('li');
-            listItem.textContent = `${parsedUser1.username} [Contact: ${parsedUser1.username}@colorado.edu]`;
-            matchedList.appendChild(listItem);
+            if(parsedUser1.username !== parsedUser2.username)
+            {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${parsedUser1.username} [Contact: ${parsedUser1.username}@colorado.edu]`;
+                matchedList.appendChild(listItem);
+            }
         } else {
             console.log('No match found.');
         }
     }
 
-    </script>
+</script>
 
     <!-- Display area for matched primary keys -->
     <div id="tbox2" style="color: black;" id="matchedKeys">
@@ -143,7 +143,5 @@
         <br>
         <br>
     </div>
-
-    
 </body>
 </html>
