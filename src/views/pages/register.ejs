@@ -1,7 +1,41 @@
 <%- include ('../partials/header') %>
 <%- include ('../partials/menu') %>
 
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+#img1 {
+  border: 2px solid black;
+  padding: 25px;
+  background: url(/img/flatties.jpg);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+</style>
+</head>
+<body>
+
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    .imgbox {
+        display: grid;
+        height: 100%;
+    }
+    .center-fit {
+        max-width: 100%;
+        max-height: 100vh;
+        margin: auto;
+    }
+</style>
+
 <main>
+<div id="img1">
   <div class="container">
     <!-- THE REST OF YOUR HTML CODE GOES HERE -->
     <% if (locals.message) { %>
@@ -13,7 +47,7 @@
         </div>
         <% } %>
 
-    <h1>Register</h1>
+    <h1 style="color: white;">Register</h1>
     <form action="/register" method="POST">
         <div class="form-group my-2">
             <label for="username">Username</label>
@@ -33,13 +67,13 @@
         </div>
 
         <div class="form-group my-2">
-            <label for="name">Mountain Name</label>
+            <label style="color: white;" for="name">Mountain Name</label>
             <input type="mtn_name" class="form-control" aria-describedby="emailHelp" placeholder="Enter Your Favorite Mountain's Name" name="mtn_name">
         </div>
 
 
         <div class="form-group my-1">          
-            <a style = "color: rgb(0, 0, 0);">Skill Ratings -> Green - 1; Blue - 2; Black - 3; Double Black - 4; Park - 5</a>
+            <a style = "color: rgb(255, 255, 255);">Skill Ratings -> Green - 1; Blue - 2; Black - 3; Double Black - 4; Park - 5</a>
             <div class="input-group mb-3">
                 <label class="input-group-text" for="inputGroupSelect01">Skill Level</label>
                 <select class="form-select" name="skill_level">
@@ -62,16 +96,16 @@
         </div> -->
 
         <div class="form-group my-1">     
-            <a style = "color: rgb(0, 0, 0);">Select whether you Ski or Board </a>   
+            <a  style = "color: rgb(255, 255, 255);">Select whether you Ski or Board </a>   
             <div class="form-check">
-            <input id="ski" class="form-check-input" type="radio" name="ski_or_board" value="ski">
-            <label class="form-check-label" for="ski">
+            <input style="color: white;" id="ski" class="form-check-input" type="radio" name="ski_or_board" value="ski">
+            <label class="form-check-label" for="ski" style="color: white;">
                 Ski
             </label>
             </div>
             <div class="form-check">
             <input id="board" class="form-check-input" type="radio" name="ski_or_board"  value="board" checked>
-            <label class="form-check-label" for="board">
+            <label class="form-check-label" for="board" style="color: white;">
                 Board
             </label>
             </div>
@@ -87,9 +121,13 @@
         </div> -->
       
         <div class="form-group">
-            <input type="submit" value="register" />
+            <input class="btn btn-outline-light" type="submit" value="register"/>
         </div>
         
     </form>
   </div>
+  </div>
 </main>
+
+</body>
+</html>

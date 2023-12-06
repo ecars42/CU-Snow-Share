@@ -119,7 +119,7 @@ app.post("/register", async (req, res) => {
     );
 
     res.render("pages/login", {message: "Registration successful."});
-  
+ 
   } catch (error) {
     console.log('error: ', error);
     res.redirect("pages/login");
