@@ -19,7 +19,7 @@
 
             // Loop through each row of the table
             userData.forEach(row => {
-                if (row.username !== loggedInUser.username) {
+                if (row.username !== loggedInUsername) {
                     // Compare attributes and count matches
                     const rowAsString = JSON.stringify(row);
                     findAndDisplayMatches(rowAsString, loggedInUser);
@@ -47,13 +47,13 @@
 
             const matchedList = document.getElementById('matchedList');
 
-            // Clear previous results
-            matchedList.innerHTML = '';
-
             // Display matched keys with contact information
-            const listItem = document.createElement('li');
-            listItem.textContent = `${parsedUser1.username} [Contact: ${parsedUser1.username}@colorado.edu]`;
-            matchedList.appendChild(listItem);
+            if(parsedUser1.username !== parsedUser2.username)
+            {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${parsedUser1.username} [Contact: ${parsedUser1.username}@colorado.edu]`;
+                matchedList.appendChild(listItem);
+            }
         } else {
             console.log('No match found.');
         }
