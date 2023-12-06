@@ -82,6 +82,17 @@ app.get("/register", (req, res) => {
   res.render("pages/register")
 });
 
+app.get("/profile", (req, res) => {
+  res.render("pages/profile", {
+    username: req.session.students.username,
+    name: req.session.students.name,
+    email: req.session.students.email,
+    mountain: req.session.tags.mtn_name,
+    skill_level: req.session.tags.skill_level,
+    ski_or_board: req.session.tags.ski_or_board,
+  });
+});
+
 // Register API
 app.post("/register", async (req, res) => {
   try {
