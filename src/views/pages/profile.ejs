@@ -1,8 +1,412 @@
-<%- include ('../partials/header') %>
-<%- include ('../partials/menu') %>
+<!DOCTYPE html>
+<html lang="en">
 
-<main>
-  <div class="container">
-    
-  </div>
-</main>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+    integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+  <style>
+    body {
+      margin-top: 20px;
+      background: #f5f5f5;
+    }
+
+    .theme-bg-white {
+      background-color: #fff !important;
+    }
+
+    .ui-w-100 {
+      width: 100px !important;
+      height: auto;
+    }
+
+    .ui-w-40 {
+      width: 40px !important;
+      height: auto;
+    }
+
+    .row-bordered>.col::before,
+    .row-bordered>[class^="col-"]::before,
+    .row-bordered>[class*=" col-"]::before,
+    .row-bordered>[class^="col "]::before,
+    .row-bordered>[class*=" col "]::before,
+    .row-bordered>[class$=" col"]::before,
+    .row-bordered>[class="col"]::before {
+      content: "";
+      position: absolute;
+      right: 0;
+      bottom: -1px;
+      left: 0;
+      display: block;
+      height: 0;
+      border-top: 1px solid rgba(24, 28, 33, 0.06);
+    }
+
+    .row-bordered>.col::after,
+    .row-bordered>[class^="col-"]::after,
+    .row-bordered>[class*=" col-"]::after,
+    .row-bordered>[class^="col "]::after,
+    .row-bordered>[class*=" col "]::after,
+    .row-bordered>[class$=" col"]::after,
+    .row-bordered>[class="col"]::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: -1px;
+      display: block;
+      width: 0;
+      border-left: 1px solid rgba(24, 28, 33, 0.06);
+    }
+
+    .ui-bg-cover {
+      background-color: rgba(0, 0, 0, 0);
+      background-position: center center;
+      background-size: cover;
+    }
+
+    .ui-square {
+      padding-top: 100% !important;
+    }
+
+    .ui-square,
+    .ui-rect,
+    .ui-rect-30,
+    .ui-rect-60,
+    .ui-rect-67,
+    .ui-rect-75 {
+      position: relative !important;
+      display: block !important;
+      padding-top: 100% !important;
+      width: 100% !important;
+    }
+    .bordered {
+            border: 10px outset #CFB87C;
+        }
+  </style>
+</head>
+<%- include ('../partials/menu.ejs') %>
+
+  <main>
+    <div class="layout-content">
+
+      <!-- Content -->
+      <div class="container flex-grow-1 container-p-y">
+
+        <!-- Header -->
+        <div class="container-m-nx container-m-ny theme-bg-white mb-4">
+          <div class="media col-md-10 col-lg-8 col-xl-7 py-5 mx-auto">
+
+            <!-- Uncomment if a profile picture is desired, but will likely be too much work -->
+
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png"
+              alt="Profile picture" class="d-block ui-w-100 rounded-circle">
+
+
+            <div class="media-body ml-5">
+              <h4 class="font-weight-bold mb-4">
+                <%= username %>
+              </h4>
+              <!-- Bio if desired to be included -->
+
+              <!-- <div class="text-muted mb-4">
+                        Lorem ipsum dolor sit amet, nibh suavitate qualisque ut nam. Ad harum primis electram duo,
+                        porro principes ei has.
+                    </div> -->
+
+            </div>
+          </div>
+          <hr class="m-0">
+        </div>
+        <!-- Header -->
+
+        <div class="row">
+          <div class="col">
+
+            <!-- Info -->
+            <div class="card mb-4">
+              <div class="card-body">
+
+                <div class="row mb-2">
+                  <div class="col-md-3 text-muted">Name:</div>
+                  <div class="col-md-9">
+                    <!-- Add name from system here -->
+                    <p>
+                      <%= name %>
+                    </p>
+                  </div>
+                </div>
+
+                <div class="row mb-2">
+                  <div class="col-md-3 text-muted">Username:</div>
+                  <div class="col-md-9">
+                    <p>
+                      <%= username %>
+                    </p>
+                  </div>
+                </div>
+
+                <div class="row mb-2">
+                  <div class="col-md-3 text-muted">Email:</div>
+                  <div class="col-md-9">
+                    <p>
+                      <%= email %>
+                    </p>
+                  </div>
+                </div>
+
+                <div class="row mb-2">
+                  <div class="col-md-3 text-muted">Phone Number:</div>
+                  <div class="col-md-9">
+                    <p>+1 (999)-999-9999</p>
+                    <!-- <p><%= phone_number %></p> -->
+                  </div>
+                </div>
+
+                <div class="row mb-2">
+                  <div class="col-md-3 text-muted">Address:</div>
+                  <div class="col-md-9">
+                    <p>3240 Prairie Ave, Boulder, CO 80301</p>
+                    <!-- <p><%= address %></p> -->
+                  </div>
+                </div>
+
+                <h6 class="my-3">Tags</h6>
+
+                <div class="w3-container">
+                  <p>Skill Level</p>
+
+                  <!-- Uncomment when tags are fixed and 
+                    included in app.get(/profile) -->
+
+
+                    <!-- <% if(tags.level == 1){ %>
+                      <div class="w3-light-grey">
+                        <div class="w3-container w3-green w3-center" style="width:25%">1</div>
+                      </div>
+                    <% } else if (tags.level == 2){ %>
+                      <div class="w3-light-grey">
+                        <div class="w3-container w3-blue w3-center" style="width:50%">2</div>
+                      </div>
+                    <% } else if (tags.level == 3){ %>
+                      <div class="w3-light-grey">
+                        <div class="w3-container w3-black w3-center" style="width:75%">3</div>
+                      </div>
+                    <% } else if (tags.level == 4){ %>
+                      <div class="bordered">
+                        <div class="w3-light-grey">
+                            <div class="w3-container w3-green w3-center" style="width:25%">1</div>
+                        </div>
+                    </div>
+                    <% } else {%>
+                        <div class="w3-light-grey">
+                            <div class="w3-container w3-center">*_*</div>
+                        </div>
+                    <% } %> -->
+                    
+                    <div class="bordered">
+                      <div class="w3-light-grey">
+                          <div class="w3-container w3-green w3-center" style="width:25%">1</div>
+                      </div>
+                  </div>
+
+                </div>
+
+                <div class="col-md-9">
+                  <a href="javascript:void(0)" class="text-body">Tag #1</a>,
+                  <a href="javascript:void(0)" class="text-body">Tag #2</a>,
+                  <a href="javascript:void(0)" class="text-body">Tag #3</a>,
+                  <a href="javascript:void(0)" class="text-body">Tag #4</a>,
+                  <a href="javascript:void(0)" class="text-body">Tag #5</a>,
+                  <a href="javascript:void(0)" class="text-body">Tag #6</a>,
+                  <a href="javascript:void(0)" class="text-body">Tag #7</a>,
+                  <a href="javascript:void(0)" class="text-body">Tag #8</a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <!-- / Info -->
+
+          <!-- Friends -->
+          <div class="card mb-4">
+            <div class="card-header with-elements">
+              <span class="card-header-title">Friends &nbsp;
+                <!-- query to count friends, store in javascript var, return here -->
+                <small class="text-muted">999 (Fetch Freind Number)</small>
+              </span>
+              <!-- Show all button can be implemented if time permits -->
+
+
+              <!-- <div class="card-header-elements ml-md-auto">
+                            <a href="javascript:void(0)" class="btn btn-default md-btn-flat btn-xs">Show All</a>
+                        </div> -->
+            </div>
+            <div class="row no-gutters row-bordered row-border-light">
+              <a href="javascript:void(0)"
+                class="d-flex col-4 col-sm-3 col-md-4 flex-column align-items-center text-body py-3 px-2">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png"
+                  alt="" class="d-block ui-w-40 rounded-circle mb-2">
+                <div class="text-center small">Friend #1</div>
+              </a>
+              <a href="javascript:void(0)"
+                class="d-flex col-4 col-sm-3 col-md-4 flex-column align-items-center text-body py-3 px-2">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png"
+                  alt="" class="d-block ui-w-40 rounded-circle mb-2">
+                <div class="text-center small">Friend #2</div>
+              </a>
+              <a href="javascript:void(0)"
+                class="d-flex col-4 col-sm-3 col-md-4 flex-column align-items-center text-body py-3 px-2">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png"
+                  alt="" class="d-block ui-w-40 rounded-circle mb-2">
+                <div class="text-center small">Friend #3</div>
+              </a>
+              <a href="javascript:void(0)"
+                class="d-flex col-4 col-sm-3 col-md-4 flex-column align-items-center text-body py-3 px-2">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png"
+                  alt="" class="d-block ui-w-40 rounded-circle mb-2">
+                <div class="text-center small">Friend #4</div>
+              </a>
+              <a href="javascript:void(0)"
+                class="d-flex col-4 col-sm-3 col-md-4 flex-column align-items-center text-body py-3 px-2">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png"
+                  alt="" class="d-block ui-w-40 rounded-circle mb-2">
+                <div class="text-center small">Friend #5</div>
+              </a>
+              <a href="javascript:void(0)"
+                class="d-flex col-4 col-sm-3 col-md-4 flex-column align-items-center text-body py-3 px-2">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png"
+                  alt="" class="d-block ui-w-40 rounded-circle mb-2">
+                <div class="text-center small">Friend #6</div>
+              </a>
+              <a href="javascript:void(0)"
+                class="d-flex col-4 col-sm-3 col-md-4 flex-column align-items-center text-body py-3 px-2">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png"
+                  alt="" class="d-block ui-w-40 rounded-circle mb-2">
+                <div class="text-center small">Friend #7</div>
+              </a>
+              <a href="javascript:void(0)"
+                class="d-flex col-4 col-sm-3 col-md-4 flex-column align-items-center text-body py-3 px-2">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png"
+                  alt="" class="d-block ui-w-40 rounded-circle mb-2">
+                <div class="text-center small">Friend #8</div>
+              </a>
+              <a href="javascript:void(0)"
+                class="d-flex col-4 col-sm-3 col-md-4 flex-column align-items-center text-body py-3 px-2">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png"
+                  alt="" class="d-block ui-w-40 rounded-circle mb-2">
+                <div class="text-center small">Friend #9</div>
+              </a>
+            </div>
+          </div>
+          <!-- / Friends -->
+
+
+          <!-- Optional to implement this, possible if time permits -->
+
+          <!-- Photos -->
+          
+          <!-- <div class="card mb-4">
+            <div class="card-header with-elements">
+              <span class="card-header-title">Photos</span>
+              <div class="card-header-elements ml-2">
+                <small class="text-muted">999 (count photos)</small>
+              </div>
+
+              <div class="card-header-elements ml-md-auto">
+                            <a href="javascript:void(0)" class="btn btn-default md-btn-flat btn-xs">Show More</a>
+                        </div>
+            </div>
+            <div class="row no-gutters align-items-start pt-1 pl-1">
+
+              <a href="javascript:void(0)" class="d-block col-3 col-sm-2 col-lg-3 pr-1 pb-1">
+                <span class="d-block ui-square ui-bg-cover"
+                  style="background-image: url('https://www.bootdey.com/image/350x180/E6E6FA/000000');"></span>
+              </a>
+              <a href="javascript:void(0)" class="d-block col-3 col-sm-2 col-lg-3 pr-1 pb-1">
+                <span class="d-block ui-square ui-bg-cover"
+                  style="background-image: url('https://www.bootdey.com/image/350x180/E6E6FA/000000');"></span>
+              </a>
+              <a href="javascript:void(0)" class="d-block col-3 col-sm-2 col-lg-3 pr-1 pb-1">
+                <span class="d-block ui-square ui-bg-cover"
+                  style="background-image: url('https://www.bootdey.com/image/350x180/E6E6FA/000000');"></span>
+              </a>
+              <a href="javascript:void(0)" class="d-block col-3 col-sm-2 col-lg-3 pr-1 pb-1">
+                <span class="d-block ui-square ui-bg-cover"
+                  style="background-image: url('https://www.bootdey.com/image/350x180/E6E6FA/000000');"></span>
+              </a>
+              <a href="javascript:void(0)" class="d-block col-3 col-sm-2 col-lg-3 pr-1 pb-1">
+                <span class="d-block ui-square ui-bg-cover"
+                  style="background-image: url('https://www.bootdey.com/image/350x180/E6E6FA/000000');"></span>
+              </a>
+              <a href="javascript:void(0)" class="d-block col-3 col-sm-2 col-lg-3 pr-1 pb-1">
+                <span class="d-block ui-square ui-bg-cover"
+                  style="background-image: url('https://www.bootdey.com/image/350x180/E6E6FA/000000');"></span>
+              </a>
+              <a href="javascript:void(0)" class="d-block col-3 col-sm-2 col-lg-3 pr-1 pb-1">
+                <span class="d-block ui-square ui-bg-cover"
+                  style="background-image: url('https://www.bootdey.com/image/350x180/E6E6FA/000000');"></span>
+              </a>
+              <a href="javascript:void(0)" class="d-block col-3 col-sm-2 col-lg-3 pr-1 pb-1">
+                <span class="d-block ui-square ui-bg-cover"
+                  style="background-image: url('https://www.bootdey.com/image/350x180/E6E6FA/000000');"></span>
+              </a>
+              <a href="javascript:void(0)" class="d-block col-3 col-sm-2 col-lg-3 pr-1 pb-1">
+                <span class="d-block ui-square ui-bg-cover"
+                  style="background-image: url('https://www.bootdey.com/image/350x180/E6E6FA/000000');"></span>
+              </a>
+              <a href="javascript:void(0)" class="d-block col-3 col-sm-2 col-lg-3 pr-1 pb-1">
+                <span class="d-block ui-square ui-bg-cover"
+                  style="background-image: url('https://www.bootdey.com/image/350x180/E6E6FA/000000');"></span>
+              </a>
+              <a href="javascript:void(0)" class="d-block col-3 col-sm-2 col-lg-3 pr-1 pb-1">
+                <span class="d-block ui-square ui-bg-cover"
+                  style="background-image: url('https://www.bootdey.com/image/350x180/E6E6FA/000000');"></span>
+              </a>
+              <a href="javascript:void(0)" class="d-block col-3 col-sm-2 col-lg-3 pr-1 pb-1">
+                <span class="d-block ui-square ui-bg-cover"
+                  style="background-image: url('https://www.bootdey.com/image/350x180/E6E6FA/000000');"></span>
+              </a>
+              <a href="javascript:void(0)" class="d-block col-3 col-sm-2 col-lg-3 pr-1 pb-1">
+                <span class="d-block ui-square ui-bg-cover"
+                  style="background-image: url('https://www.bootdey.com/image/350x180/E6E6FA/000000');"></span>
+              </a>
+              <a href="javascript:void(0)" class="d-block col-3 col-sm-2 col-lg-3 pr-1 pb-1">
+                <span class="d-block ui-square ui-bg-cover"
+                  style="background-image: url('https://www.bootdey.com/image/350x180/E6E6FA/000000');"></span>
+              </a>
+              <a href="javascript:void(0)" class="d-block col-3 col-sm-2 col-lg-3 pr-1 pb-1">
+                <span class="d-block ui-square ui-bg-cover"
+                  style="background-image: url('https://www.bootdey.com/image/350x180/E6E6FA/000000');"></span>
+              </a>
+              <a href="javascript:void(0)" class="d-block col-3 col-sm-2 col-lg-3 pr-1 pb-1">
+                <span class="d-block ui-square ui-bg-cover"
+                  style="background-image: url('https://www.bootdey.com/image/350x180/E6E6FA/000000');"></span>
+              </a>
+
+            </div>
+          </div> -->
+          <!-- / Photos -->
+
+        </div>
+      </div>
+
+    </div>
+    <!-- / Content -->
+
+    </div>
+  </main>
+
+  <%- include ('../partials/footer.ejs') %>
