@@ -60,7 +60,9 @@
 <body>
     <div id="img1">
         <div id="tbox1">
-            <p>Welcome to the discover page. On this page we will look over your profile and match you with other students that share similar skills and interests as you. Click the button below to find compatibilities!</p>
+            <h2>Welcome to the discover page!</h2>
+            <p>On this page we will look over your profile and match you with other students that share skiing/snowboarding and mountain preferences as you.</p>
+            <p>Click the button below to find compatibilities!</p>
             <button class="btn btn-outline-dark" onclick="compareData('<%= JSON.stringify(loggedInUser) %>')">Find Ski/Board Partners</button>
         </div>
 
@@ -117,7 +119,7 @@
             if(parsedUser1.username !== parsedUser2.username)
             {
                 const listItem = document.createElement('li');
-                listItem.textContent = `${parsedUser1.username} [Contact: ${parsedUser1.username}@colorado.edu]`;
+                listItem.textContent = `[User: ${parsedUser1.username}] [Contact: ${parsedUser1.username}@colorado.edu]`;
                 matchedList.appendChild(listItem);
             }
         } else {
