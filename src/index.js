@@ -82,17 +82,6 @@ app.get("/register", (req, res) => {
   res.render("pages/register")
 });
 
-app.get("/profile", (req, res) => {
-  res.render("pages/profile", {
-    username: req.body.students.username,
-    name: req.body.students.name,
-    email: req.body.students.email,
-    mountain: req.body.tags.mtn_name,
-    skill_level: req.body.tags.skill_level,
-    ski_or_board: req.session.tags.ski_or_board,
-  });
-});
-
 // Register API
 app.post("/register", async (req, res) => {
   try {
@@ -242,6 +231,17 @@ app.get("/api/discover/matches", async (req, res) => {
     res.status(500).json({ status: 'error', message: 'Internal server error' });
   }
 });
+
+app.get("/profile", (req, res) => {
+  const loggedInUser = req.session.user;
+  res.render("pages/profile", {
+    username: loggedInUser.username,
+    name: loggedInUser.name,
+    mountain: loggedInUser.mtn_name,
+    skill_level: loggedInUser.skill_level,
+    ski_or_board: loggedInUser.ski_or_board,
+    });
+  });
 
 // Logout API
 app.get("/logout", (req, res) => {
